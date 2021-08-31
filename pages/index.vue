@@ -1,6 +1,22 @@
 <template>
   <div class="home">
+    <!-- Hero -->
     <Hero />
+    <!-- Movies -->
+    <div class="container movies">
+      <div id="movie-grid" class="movie-grid">
+        <div class="movie" v-for="(movie, index) in movies" :key="index">
+          <div class="movie-img">
+            <img
+              :src="`https://image.tmdb.org/t/p/${movie.poster_path}`"
+              alt=""
+            />
+            <p class="review">{{ movie.vote_average }}</p>
+            <p class="overview">{{ movie.overview }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
