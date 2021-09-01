@@ -68,9 +68,8 @@ export default {
       await this.getMovies()
       return
     }
-    if (this.searchInput !== '') {
-      await this.searchedMovies()
-    }
+
+    await this.searchMovies()
   },
   methods: {
     async getMovies() {
@@ -83,7 +82,7 @@ export default {
       })
       console.log(this.movies)
     },
-    async searchedMovies() {
+    async searchMovies() {
       const data = axios.get(
         `https://api.themoviedb.org/3/search/movie?api_key=b0e7142d1912dc6e432dcfdb40d564fd&language=en-US&page=1&query=${this.searchInput}`
       )
@@ -91,6 +90,7 @@ export default {
       result.data.results.forEach((movie) => {
         this.searchedMovies.push(movie)
       })
+      console.log(this.searchedMovies)
     },
   },
 }
