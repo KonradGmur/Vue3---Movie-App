@@ -5,7 +5,12 @@
 
     <!-- Search -->
     <div class="container search">
-      <input type="text" placeholder="Search" v-model.lazy="searchInput" />
+      <input
+        @keyup.enter="$fetch"
+        type="text"
+        placeholder="Search"
+        v-model.lazy="searchInput"
+      />
       <button v-show="searchInput !== ''" class="button">Clear Search</button>
     </div>
 
@@ -54,11 +59,18 @@ export default {
   data() {
     return {
       movies: [],
+      searchedMovies: [],
       searchInput: '',
     }
   },
   async fetch() {
-    await this.getMovies()
+    if (this.searchInput === '') {
+      await this.getMovies()
+      return
+    }
+    if (this.searchInput !== '') {
+      await this.searchedMovies()
+    }
   },
   methods: {
     async getMovies() {
@@ -70,6 +82,15 @@ export default {
         this.movies.push(movie)
       })
       console.log(this.movies)
+    },
+    async searchedMovies() {
+      const data = axios.get(
+        `https://api.themoviedb.org/3/search/movie?api_key=b0e7142d1912dc6e432dcfdb40d564fd&language=en-US&page=1&query=${this.searchInput}`
+      )
+      const result = await data
+      result.data.results.forEach((movie) => {
+        this.searchedMovies.push(movie)
+      })
     },
   },
 }
